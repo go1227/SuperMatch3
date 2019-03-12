@@ -1,6 +1,6 @@
-__author__ = "Guilherme Ortiz"
-__version__ = "1.0"
-__date_last_modification__ = "10/10/2018"
+__author__ = "Gil Ortiz"
+__version__ = "1.1"
+__date_last_modification__ = "3/11/2019"
 __python_version__ = "3"
 
 # Program that generates scratch off tickets in batches
@@ -85,25 +85,42 @@ def CreateWiningTicket(numbers, val):
 
 
 
-# I am telling the program to print 250 tickets
-# According to the winning ration, I should expect:
+# E.g.: 250 tickets request
+# According to the winning ratio, I should expect:
 # - 17 tickets with $1 prize
 # - 5 tickets with $3 prize
 # - 2 tickets with $5 prize
 # - 1 ticket with $10 prize
-print_ticket_qty = 250
+
+
+
+print_ticket_qty = 0
+valid_entry = False
+while valid_entry is False:
+    print_ticket_qty = input("\nEnter the number of tickets you want to generate in this batch (min. 10 tickets):")
+    if (print_ticket_qty.isdigit()):
+        if (int(print_ticket_qty) >= 10):
+            print_ticket_qty = int(print_ticket_qty)
+            valid_entry = True
+        else:
+            print("\nEach batch should contain a minimum of 10 tickets")
+    else:
+        print("\nThis is an invalid number!")
+
+
+
+
 
 already_printed = 0
 #Step 1 of 2: Loop through the winning ratio dictionary and call the function CreateWiningTickets as many times as necessary
 for k,v in winning_ratio.items():
     quant = round(print_ticket_qty / v)
-    #print(str(k) + '--' + str(v) + '--' + str(quant))
     if (quant > 0):
         for n in range(0,quant):
             CreateWiningTicket(numbers,k)
             already_printed += 1
 
-#Step 2 of 2: We have just printed all winning tickets. Now we have to print the losing tickets to make a total of 250 in this batch.
-for i in range(1,print_ticket_qty-already_printed):
+#Step 2 of 2: We have just printed all winning tickets. Now we have to print the losing tickets.
+for i in range(1, print_ticket_qty - already_printed):
     CreateLosingTicket(numbers)
 
